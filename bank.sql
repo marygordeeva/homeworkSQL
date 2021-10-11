@@ -13,18 +13,23 @@
 --2. Найти все счета плательщика (account_number), сумма платежа которых превышает 300 рублей
 --Решение.
   --1.
-  Select distinct account_number 
-  from account 
-  join payment on payment.payer_account_id = account.id 
-  where amount > 300
+ Select account_number
+  from account
+  join payment on payment.payer_account_id = account.id
+  join currency on account.currency_id = currency.id
+  group by account_number
+  having Sum(amount)>300
+  Where currency.name = 'Рубль'
 --3. Найти все рублевые платежи для клиентов (payment.id, client.name, account_number), имя которых начинается c буквы А
 --Решение.
   --1.
   Select payment.id, client.name, account.account_number
-  from account, payment, client 
+  from account, payment, client, banki 
   where account.client_id = client.id 
   and account.id = payment.payer_account_id 
+  and account.currency_id = currency.id
   and client.name like 'A%'
+  and currency.name = 'Рубль'
 --4. Найти все платежи(payment.id, payment.name, payment.amount), где счет плательщика имеет тип "Расчетный счет"
 --Решение.
   --1.
