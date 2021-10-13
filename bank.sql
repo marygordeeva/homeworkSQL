@@ -56,3 +56,4 @@
   where c.id = a.client_id 
   and a.bank_id = b.id 
   and b.name = 'Веселый банк' 
+  
